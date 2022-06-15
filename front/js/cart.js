@@ -205,6 +205,7 @@ if (page.match("cart")) {
     valideClic();
   });
 }
+
 texteInfo(regexChiffreLettre, "#addressErrorMsg", adresse);
 if (page.match("cart")) {
   let regexEmail = document.querySelector(".regex_email");
