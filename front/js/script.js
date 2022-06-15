@@ -1,24 +1,28 @@
-// Récupération donnée serveur
-fetch('http://localhost:3000/api/products').then(response => {
-       if (!response.ok) {
-           throw new Error("HTTP error " + response.status);
-       }
-       return response.json();
-   })
-   .then(json => {
-       console.log(json);
-       let products = json;
-       var itemsElt = document.getElementById('items');
-       for (let i = 0; i < products.length; i++) {
-        itemsElt.innerHTML += '<a href="./product.html?id='+products[i]._id+'">'
-        + '<article>'
-        +  '<img src="'+products[i].imageUrl+'" alt="Lorem ipsum dolor sit amet, Kanap name1">'
-        +  '<h3 class="productName">'+products[i].name+'</h3>'
-        +  '<p class="productDescription">'+products[i].description+'</p>'
-        + '</article>'
-        + '</a>';
-       }
-   })
-   .catch(function () {
-       
-   })
+// fetch va chercher le localhost
+
+fetch("http://localhost:3000/api/products")
+  .then((res) => res.json())
+  .then((objetProduits) => {
+    console.table(objetProduits);
+    lesKanaps(objetProduits);
+  })
+  // Remplace le contenu par une erreur si l'api n'est pas lancée
+  .catch((err) => {
+    document.querySelector(".titles").innerHTML = "<h1>erreur</h1>";
+    console.log("erreur, sur ressource api:" + err);
+  });
+
+// Fonction pour prendre une page model de canapé
+
+function lesKanaps(index) {
+  let zoneArticle = document.querySelector("#items");
+  for (let article of index) {
+    zoneArticle.innerHTML += `<a href="./product.html?_id=${article._id}">
+    <article>
+      <img src="${article.imageUrl}" alt="${article.altTxt}">
+      <h3 class="productName">${article.name}</h3>
+      <p class="productDescription">${article.description}</p>
+    </article>
+  </a>`;
+  }
+}
