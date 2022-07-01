@@ -314,6 +314,7 @@ if (panier && panier.length > 0) {
 }
 let contactRef;
 let commandeFinale;
+
 function paquet() {
   contactRef = JSON.parse(localStorage.getItem("contactClient"));
   commandeFinale = {
@@ -346,7 +347,7 @@ function envoiPaquet() {
     })
       .then((res) => res.json())
       .then((data) => {
-        window.location.href = `/front/html/confirmation.html?commande=${data.orderId}`;
+        window.location.href = "./confirmation.html?commande="+data.orderId;
       })
       .catch(function (err) {
         console.log(err);
@@ -354,16 +355,3 @@ function envoiPaquet() {
       });
   }
 }
-
-(function Commande() {
-  if (page.match("confirmation")) {
-    sessionStorage.clear();
-    localStorage.clear();
-    let numCom = new URLSearchParams(document.location.search).get("commande");
-    document.querySelector("#orderId").innerHTML = `<br>${numCom}<br>Merci pour votre achat`;
-    console.log("valeur de l'orderId venant de l'url: " + numCom);
-    numCom = undefined;
-  } else {
-    console.log("sur page cart");
-  }
-})();
