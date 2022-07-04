@@ -4,7 +4,7 @@ fetch("http://localhost:3000/api/products")
   .then((res) => res.json())
   .then((objetProduits) => {
     console.table(objetProduits);
-    lesKanaps(objetProduits);
+    Kanap(objetProduits);
   })
   // Remplace le contenu par une erreur si l'api n'est pas lancée
   .catch((err) => {
@@ -14,7 +14,7 @@ fetch("http://localhost:3000/api/products")
 
 // Fonction pour prendre une page model de canapé
 
-function lesKanaps(index) {
+function Kanap(index) {
   let zoneArticle = document.querySelector("#items");
   for (let article of index) {
     zoneArticle.innerHTML += `<a href="./product.html?_id=${article._id}">
