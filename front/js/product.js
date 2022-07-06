@@ -115,7 +115,7 @@ function Panier() {
   if (produitsEnregistrés) {
     for (let choix of produitsEnregistrés) {
       if (choix._id === id && choix.couleur === articleClient.couleur) {
-        alert("RAPPEL: Vous aviez déja choisit cet article.");
+        alert("RAPPEL: Vous aviez déja choisi cet article.");
         let additionQuantité = parseInt(choix.quantité) + parseInt(quantitéProduit);
         choix.quantité = JSON.stringify(additionQuantité);
         return (localStorage.panierStocké = JSON.stringify(produitsEnregistrés));
