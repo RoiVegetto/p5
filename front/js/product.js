@@ -1,6 +1,5 @@
 const params = new URLSearchParams(document.location.search);
 const id = params.get("_id");
-console.log(id); 
 
 fetch("http://localhost:3000/api/products")
   .then((res) => res.json())
@@ -9,7 +8,6 @@ fetch("http://localhost:3000/api/products")
   })
   .catch((err) => {
     document.querySelector(".item").innerHTML = "<h1>erreur</h1>";
-    console.log("erreur, sur ressource api: " + err);
   });
 let articleClient = {};
 articleClient._id = id;
@@ -34,7 +32,6 @@ function lesProduits(produit) {
       }
     }
   }
-  console.log("affichage effectué");
 }
 let choixCouleur = document.querySelector("#colors");
 choixCouleur.addEventListener("input", (ec) => {
@@ -44,7 +41,6 @@ choixCouleur.addEventListener("input", (ec) => {
 
   document.querySelector("#addToCart").style.color = "white";
   document.querySelector("#addToCart").textContent = "Ajouter au panier";
-  console.log(couleurProduit);
 });
 
 // Quantité des produits
@@ -56,7 +52,6 @@ choixQuantité.addEventListener("input", (eq) => {
   articleClient.quantité = quantitéProduit;
   document.querySelector("#addToCart").style.color = "white";
   document.querySelector("#addToCart").textContent = "Ajouter au panier";
-  console.log(quantitéProduit);
 });
 
 // Condition pour la validation
@@ -73,7 +68,6 @@ choixProduit.addEventListener("click", () => {
     alert("Pour valider le choix de cet article, veuillez renseigner une couleur, et/ou une quantité valide entre 1 et 100");
   } else {
     Panier();
-    console.log("clic effectué");
     document.querySelector("#addToCart").style.color = "rgb(0, 205, 0)";
     document.querySelector("#addToCart").textContent = "Produit ajouté !";
   }
@@ -84,11 +78,9 @@ let produitsTemporaires = [];
 let produitsAPousser = [];
 
 function ajoutPremierProduit() {
-  console.log(produitsEnregistrés);
   // Si le produit enregistré est null c'est qu'il n'est pas créé
   if (produitsEnregistrés === null) {
     choixProduitClient.push(articleClient);
-    console.log(articleClient);
     return (localStorage.panierStocké = JSON.stringify(choixProduitClient));
   }
 }

@@ -9,7 +9,6 @@ fetch("http://localhost:3000/api/products")
   // Remplace le contenu par une erreur si l'api n'est pas lancée
   .catch((err) => {
     document.querySelector(".titles").innerHTML = "<h1>erreur</h1>";
-    console.log("erreur, sur ressource api:" + err);
   });
 
 // Fonction pour prendre une page model de canapé

@@ -3,16 +3,11 @@ if (page.match("cart")) {
 fetch("http://localhost:3000/api/products")
   .then((res) => res.json())
   .then((objetProduits) => {
-      console.log(objetProduits);
       affichagePanier(objetProduits);
   })
   .catch((err) => {
       document.querySelector("#cartAndFormContainer").innerHTML = "<h1>erreur</h1>";
-      console.log("erreur, sur ressource api: " + err);
   });
-} else {
-  console.log("sur page confirmation");
-}
 
 function affichagePanier(index) {
   let panier = JSON.parse(localStorage.getItem("panierStocké"));
@@ -308,7 +303,6 @@ if (panier && panier.length > 0) {
     panierId.push(indice._id);
   }
 } else {
-  console.log("le panier est vide");
   document.querySelector("#order").setAttribute("value", "Panier vide!");
 }
 }
@@ -334,7 +328,6 @@ function paquet() {
 function envoiPaquet() {
   tableauId();
   paquet();
-  console.log(commandeFinale);
   let somme = contactRef.regexNormal + contactRef.regexAdresse + contactRef.regexEmail;
   if (panierId.length != 0 && somme === 5) {
     fetch("http://localhost:3000/api/products/order", {
@@ -350,7 +343,6 @@ function envoiPaquet() {
         window.location.href = "./confirmation.html?commande="+data.orderId;
       })
       .catch(function (err) {
-        console.log(err);
         alert("erreur");
       });
   }
