@@ -8,6 +8,7 @@ fetch("http://localhost:3000/api/products")
   .catch((err) => {
       document.querySelector("#cartAndFormContainer").innerHTML = "<h1>erreur</h1>";
   });
+}
 
 function affichagePanier(index) {
   let panier = JSON.parse(localStorage.getItem("panierStocké"));
