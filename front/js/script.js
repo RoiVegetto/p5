@@ -6,12 +6,12 @@ fetch("http://localhost:3000/api/products")
     console.table(objetProduits);
     Kanap(objetProduits);
   })
-  // Remplace le contenu par une erreur si l'api n'est pas lancée
+  // Remplace le contenu par une erreur si l'api n'est pas lancee
   .catch((err) => {
     document.querySelector(".titles").innerHTML = "<h1>erreur</h1>";
   });
 
-// Fonction pour prendre une page model de canapé
+// Fonction pour prendre une page model de canape
 
 function Kanap(index) {
   let zoneArticle = document.querySelector("#items");

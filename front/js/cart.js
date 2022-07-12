@@ -11,8 +11,8 @@ fetch("http://localhost:3000/api/products")
 }
 
 function affichagePanier(index) {
-  let panier = JSON.parse(localStorage.getItem("panierStocké"));
-  // Si le panier est supérieur à 0
+  let panier = JSON.parse(localStorage.getItem("panierStocke"));
+  // Si le panier est superieur à 0
   if (panier && panier.length != 0) {
     for (let choix of panier) {
       for (let g = 0, h = index.length; g < h; g++) {
@@ -32,16 +32,16 @@ function affichagePanier(index) {
     document.querySelector("h1").innerHTML =
       "Votre panier est vide";
   }
-  modifQuantité();
+  modifQuantite();
   suppression();
 }
 
 // Affichage d'un panier sous forme de tableau
 
-function affiche(indexé) {
+function affiche(indexe) {
   let zonePanier = document.querySelector("#cart__items");
-  zonePanier.innerHTML += indexé.map((choix) => 
-  `<article class="cart__item" data-id="${choix._id}" data-couleur="${choix.couleur}" data-quantité="${choix.quantité}"> 
+  zonePanier.innerHTML += indexe.map((choix) => 
+  `<article class="cart__item" data-id="${choix._id}" data-couleur="${choix.couleur}" data-quantite="${choix.quantite}"> 
     <div class="cart__item__img">
       <img src="${choix.image}" alt="${choix.alt}">
     </div>
@@ -53,8 +53,8 @@ function affiche(indexé) {
       </div>
       <div class="cart__item__content__settings">
         <div class="cart__item__content__settings__quantity">
-          <p>Qté : </p>
-          <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${choix.quantité}">
+          <p>Qte : </p>
+          <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${choix.quantite}">
         </div>
         <div class="cart__item__content__settings__delete">
           <p class="deleteItem" data-id="${choix._id}" data-couleur="${choix.couleur}">Supprimer</p>
@@ -66,20 +66,20 @@ function affiche(indexé) {
   totalProduit();
 }
 
-// Fonction de modifiaction de quantité
+// Fonction de modifiaction de quantite
 
-function modifQuantité() {
+function modifQuantite() {
   const cart = document.querySelectorAll(".cart__item");
   cart.forEach((cart) => {
     cart.addEventListener("change", (eq) => {
-      let panier = JSON.parse(localStorage.getItem("panierStocké"));
+      let panier = JSON.parse(localStorage.getItem("panierStocke"));
       for (article of panier)
         if (
           article._id === cart.dataset.id &&
           cart.dataset.couleur === article.couleur
         ) {
-          article.quantité = eq.target.value;
-          localStorage.panierStocké = JSON.stringify(panier);
+          article.quantite = eq.target.value;
+          localStorage.panierStocke = JSON.stringify(panier);
           totalProduit();
         }
     });
@@ -92,14 +92,14 @@ function suppression() {
   const cartdelete = document.querySelectorAll(".cart__item .deleteItem");
   cartdelete.forEach((cartdelete) => {
     cartdelete.addEventListener("click", () => {
-      let panier = JSON.parse(localStorage.getItem("panierStocké"));
+      let panier = JSON.parse(localStorage.getItem("panierStocke"));
       for (let d = 0, c = panier.length; d < c; d++)
         if (
           panier[d]._id === cartdelete.dataset.id &&
           panier[d].couleur === cartdelete.dataset.couleur
         ) {
           const num = [d];
-          let nouveauPanier = JSON.parse(localStorage.getItem("panierStocké"));
+          let nouveauPanier = JSON.parse(localStorage.getItem("panierStocke"));
           nouveauPanier.splice(num, 1);
           if (nouveauPanier && nouveauPanier.length == 0) {
             document.querySelector("#totalQuantity").innerHTML = "0";
@@ -107,7 +107,7 @@ function suppression() {
             document.querySelector("h1").innerHTML =
               "Vous n'avez pas d'article dans votre panier";
           }
-          localStorage.panierStocké = JSON.stringify(nouveauPanier);
+          localStorage.panierStocke = JSON.stringify(nouveauPanier);
           totalProduit();
           return location.reload();
         }
@@ -118,20 +118,20 @@ function suppression() {
 // Fonction cout et total produit
 
 function totalProduit() {
-  let panier = JSON.parse(localStorage.getItem("panierStocké"));
+  let panier = JSON.parse(localStorage.getItem("panierStocke"));
   let totalArticle = 0;
-  let prixCombiné = 0;
+  let prixCombine = 0;
   let totalPrix = 0;
   for (let article of panier) {
-    totalArticle += JSON.parse(article.quantité);
-    prixCombiné = JSON.parse(article.quantité) * JSON.parse(article.prix);
-    totalPrix += prixCombiné;
+    totalArticle += JSON.parse(article.quantite);
+    prixCombine = JSON.parse(article.quantite) * JSON.parse(article.prix);
+    totalPrix += prixCombine;
   }
   document.getElementById("totalQuantity").textContent = totalArticle;
   document.getElementById("totalPrice").textContent = totalPrix;
 }
 
-// Données client
+// Donnees client
 
 if (page.match("cart")) {
   var contactClient = {};
@@ -232,7 +232,7 @@ if (page.match("cart")) {
       document.querySelector("#emailErrorMsg").innerHTML = "Caractère non valide";
       document.querySelector("#emailErrorMsg").style.color = "white";
     } else if (valeur != "" && regMatch == null) {
-      document.querySelector("#emailErrorMsg").innerHTML = "Caratères acceptés pour ce champ. Forme email pas encore conforme";
+      document.querySelector("#emailErrorMsg").innerHTML = "Caratères acceptes pour ce champ. Forme email pas encore conforme";
       document.querySelector("#emailErrorMsg").style.color = "white";
     } else {
       document.querySelector("#emailErrorMsg").innerHTML = "Forme email conforme.";
@@ -263,10 +263,10 @@ function texteInfo(regex, pointage, zoneEcoute) {
         document.querySelector(pointage).textContent = "Veuillez renseigner ce champ.";
         document.querySelector(pointage).style.color = "white";
       } else if (valeur !== "" && index != 0) {
-        document.querySelector(pointage).innerHTML = "Reformulez cette donnée";
+        document.querySelector(pointage).innerHTML = "Reformulez cette donnee";
         document.querySelector(pointage).style.color = "white";
       } else {
-      document.querySelector(pointage).innerHTML = "Caratères acceptés pour ce champ.";
+      document.querySelector(pointage).innerHTML = "Caratères acceptes pour ce champ.";
       document.querySelector(pointage).style.color = "white";
       }
     });
@@ -294,11 +294,11 @@ if (page.match("cart")) {
   });
 }
 
-// Fonction récupération ID 
+// Fonction recuperation ID 
 
 let panierId = [];
 function tableauId() {
-let panier = JSON.parse(localStorage.getItem("panierStocké"));
+let panier = JSON.parse(localStorage.getItem("panierStocke"));
 if (panier && panier.length > 0) {
   for (let indice of panier) {
     panierId.push(indice._id);

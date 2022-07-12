@@ -43,13 +43,13 @@ choixCouleur.addEventListener("input", (ec) => {
   document.querySelector("#addToCart").textContent = "Ajouter au panier";
 });
 
-// Quantité des produits
+// Quantite des produits
 
-let choixQuantité = document.querySelector('input[id="quantity"]');
-let quantitéProduit;
-choixQuantité.addEventListener("input", (eq) => {
-  quantitéProduit = eq.target.value;
-  articleClient.quantité = quantitéProduit;
+let choixQuantite = document.querySelector('input[id="quantity"]');
+let quantiteProduit;
+choixQuantite.addEventListener("input", (eq) => {
+  quantiteProduit = eq.target.value;
+  articleClient.quantite = quantiteProduit;
   document.querySelector("#addToCart").style.color = "white";
   document.querySelector("#addToCart").textContent = "Ajouter au panier";
 });
@@ -59,36 +59,36 @@ choixQuantité.addEventListener("input", (eq) => {
 let choixProduit = document.querySelector("#addToCart");
 choixProduit.addEventListener("click", () => {
   if (
-    articleClient.quantité < 1 ||
-    articleClient.quantité > 100 ||
-    articleClient.quantité === undefined ||
+    articleClient.quantite < 1 ||
+    articleClient.quantite > 100 ||
+    articleClient.quantite === undefined ||
     articleClient.couleur === "" ||
     articleClient.couleur === undefined
   ) {
-    alert("Pour valider le choix de cet article, veuillez renseigner une couleur, et/ou une quantité valide entre 1 et 100");
+    alert("Pour valider le choix de cet article, veuillez renseigner une couleur, et/ou une quantite valide entre 1 et 100");
   } else {
     Panier();
     document.querySelector("#addToCart").style.color = "rgb(0, 205, 0)";
-    document.querySelector("#addToCart").textContent = "Produit ajouté !";
+    document.querySelector("#addToCart").textContent = "Produit ajoute !";
   }
 });
 let choixProduitClient = [];
-let produitsEnregistrés = [];
+let produitsEnregistres = [];
 let produitsTemporaires = [];
 let produitsAPousser = [];
 
 function ajoutPremierProduit() {
-  // Si le produit enregistré est null c'est qu'il n'est pas créé
-  if (produitsEnregistrés === null) {
+  // Si le produit enregistre est null c'est qu'il n'est pas cree
+  if (produitsEnregistres === null) {
     choixProduitClient.push(articleClient);
-    return (localStorage.panierStocké = JSON.stringify(choixProduitClient));
+    return (localStorage.panierStocke = JSON.stringify(choixProduitClient));
   }
 }
 
 function ajoutAutreProduit() {
   produitsAPousser = [];
   produitsTemporaires.push(articleClient);
-  produitsAPousser = [...produitsEnregistrés, ...produitsTemporaires];
+  produitsAPousser = [...produitsEnregistres, ...produitsTemporaires];
   produitsAPousser.sort(function triage(a, b) {
     if (a._id < b._id) return -1;
     if (a._id > b._id) return 1;
@@ -99,18 +99,18 @@ function ajoutAutreProduit() {
     return 0;
   });
   produitsTemporaires = [];
-  return (localStorage.panierStocké = JSON.stringify(produitsAPousser));
+  return (localStorage.panierStocke = JSON.stringify(produitsAPousser));
 }
 
 function Panier() {
-  produitsEnregistrés = JSON.parse(localStorage.getItem("panierStocké"));
-  if (produitsEnregistrés) {
-    for (let choix of produitsEnregistrés) {
+  produitsEnregistres = JSON.parse(localStorage.getItem("panierStocke"));
+  if (produitsEnregistres) {
+    for (let choix of produitsEnregistres) {
       if (choix._id === id && choix.couleur === articleClient.couleur) {
-        alert("RAPPEL: Vous aviez déja choisi cet article.");
-        let additionQuantité = parseInt(choix.quantité) + parseInt(quantitéProduit);
-        choix.quantité = JSON.stringify(additionQuantité);
-        return (localStorage.panierStocké = JSON.stringify(produitsEnregistrés));
+        alert("RAPPEL: Vous aviez deja choisi cet article.");
+        let additionQuantite = parseInt(choix.quantite) + parseInt(quantiteProduit);
+        choix.quantite = JSON.stringify(additionQuantite);
+        return (localStorage.panierStocke = JSON.stringify(produitsEnregistres));
       }
     }
     return ajoutAutreProduit();
