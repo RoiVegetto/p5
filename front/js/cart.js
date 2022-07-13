@@ -6,13 +6,13 @@ fetch("http://localhost:3000/api/products")
       affichagePanier(objetProduits);
   })
   .catch((err) => {
-      document.querySelector("#cartAndFormContainer").innerHTML = "<h1>erreur</h1>";
+      document.querySelector("#cartAndFormContainer").textContent = "<h1>erreur</h1>";
   });
 }
 
 function affichagePanier(index) {
-  let panier = JSON.parse(localStorage.getItem("panierStocke"));
-  // Si le panier est superieur à 0
+  let panier = JSON.parse(localStorage.getItem("panierStocké"));
+  // Si le panier est supérieur à 0
   if (panier && panier.length != 0) {
     for (let choix of panier) {
       for (let g = 0, h = index.length; g < h; g++) {
@@ -27,10 +27,9 @@ function affichagePanier(index) {
     }
     affiche(panier);
   } else {
-    document.querySelector("#totalQuantity").innerHTML = "0";
-    document.querySelector("#totalPrice").innerHTML = "0";
-    document.querySelector("h1").innerHTML =
-      "Votre panier est vide";
+    document.querySelector("#totalQuantity").textContent = "0";
+    document.querySelector("#totalPrice").textContent = "0";
+    document.querySelector("h1").textContent = "Votre panier est vide";
   }
   modifQuantite();
   suppression();
@@ -41,7 +40,7 @@ function affichagePanier(index) {
 function affiche(indexe) {
   let zonePanier = document.querySelector("#cart__items");
   zonePanier.innerHTML += indexe.map((choix) => 
-  `<article class="cart__item" data-id="${choix._id}" data-couleur="${choix.couleur}" data-quantite="${choix.quantite}"> 
+  `<article class="cart__item" data-id="${choix._id}" data-couleur="${choix.couleur}" data-quantité="${choix.quantité}"> 
     <div class="cart__item__img">
       <img src="${choix.image}" alt="${choix.alt}">
     </div>
@@ -53,8 +52,8 @@ function affiche(indexe) {
       </div>
       <div class="cart__item__content__settings">
         <div class="cart__item__content__settings__quantity">
-          <p>Qte : </p>
-          <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${choix.quantite}">
+          <p>Qté : </p>
+          <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${choix.quantité}">
         </div>
         <div class="cart__item__content__settings__delete">
           <p class="deleteItem" data-id="${choix._id}" data-couleur="${choix.couleur}">Supprimer</p>
@@ -66,72 +65,69 @@ function affiche(indexe) {
   totalProduit();
 }
 
-// Fonction de modifiaction de quantite
+// Fonction de modifiaction de quantité
 
 function modifQuantite() {
   const cart = document.querySelectorAll(".cart__item");
   cart.forEach((cart) => {
     cart.addEventListener("change", (eq) => {
-      let panier = JSON.parse(localStorage.getItem("panierStocke"));
+      let panier = JSON.parse(localStorage.getItem("panierStocké"));
       for (article of panier)
         if (
           article._id === cart.dataset.id &&
           cart.dataset.couleur === article.couleur
         ) {
-          article.quantite = eq.target.value;
-          localStorage.panierStocke = JSON.stringify(panier);
+          article.quantité = eq.target.value;
+          localStorage.panierStocké = JSON.stringify(panier);
           totalProduit();
         }
     });
   });
 }
-
 // Fonction suppression du panier
-
 function suppression() {
   const cartdelete = document.querySelectorAll(".cart__item .deleteItem");
   cartdelete.forEach((cartdelete) => {
     cartdelete.addEventListener("click", () => {
-      let panier = JSON.parse(localStorage.getItem("panierStocke"));
+      let panier = JSON.parse(localStorage.getItem("panierStocké"));
       for (let d = 0, c = panier.length; d < c; d++)
         if (
           panier[d]._id === cartdelete.dataset.id &&
           panier[d].couleur === cartdelete.dataset.couleur
         ) {
           const num = [d];
-          let nouveauPanier = JSON.parse(localStorage.getItem("panierStocke"));
+          let nouveauPanier = JSON.parse(localStorage.getItem("panierStocké"));
           nouveauPanier.splice(num, 1);
           if (nouveauPanier && nouveauPanier.length == 0) {
-            document.querySelector("#totalQuantity").innerHTML = "0";
-            document.querySelector("#totalPrice").innerHTML = "0";
-            document.querySelector("h1").innerHTML =
+            document.querySelector("#totalQuantity").textContent = "0";
+            document.querySelector("#totalPrice").textContent = "0";
+            document.querySelector("h1").textContent =
               "Vous n'avez pas d'article dans votre panier";
           }
-          localStorage.panierStocke = JSON.stringify(nouveauPanier);
+          localStorage.panierStocké = JSON.stringify(nouveauPanier);
           totalProduit();
           return location.reload();
         }
     });
   });
 }
-
 // Fonction cout et total produit
 
 function totalProduit() {
-  let panier = JSON.parse(localStorage.getItem("panierStocke"));
+  let panier = JSON.parse(localStorage.getItem("panierStocké"));
   let totalArticle = 0;
-  let prixCombine = 0;
+  let prixCombiné = 0;
   let totalPrix = 0;
   for (let article of panier) {
-    totalArticle += JSON.parse(article.quantite);
-    prixCombine = JSON.parse(article.quantite) * JSON.parse(article.prix);
-    totalPrix += prixCombine;
+    totalArticle += JSON.parse(article.quantité);
+    prixCombiné = JSON.parse(article.quantité) * JSON.parse(article.prix);
+    totalPrix += prixCombiné;
   }
   document.getElementById("totalQuantity").textContent = totalArticle;
   document.getElementById("totalPrice").textContent = totalPrix;
 }
 
-// Donnees client
+// Données client
 
 if (page.match("cart")) {
   var contactClient = {};
@@ -153,7 +149,6 @@ let regexLettre = /^[a-záàâäãåçéèêëíìîïñóòôöõúùûüýÿæ
 let regexChiffreLettre = /^[a-z0-9áàâäãåçéèêëíìîïñóòôöõúùûüýÿæœ\s-]{1,60}$/i;
 let regValideEmail = /^[a-z0-9æœ.!#$%&’*+/=?^_`{|}~"(),:;<>@[\]-]{1,60}$/i;
 let regMatchEmail = /^[a-zA-Z0-9æœ.!#$%&’*+/=?^_`{|}~"(),:;<>@[\]-]+@([\w-]+\.)+[\w-]{2,4}$/i;
-
 if (page.match("cart")) {
   regexTexte.forEach((regexTexte) =>
     regexTexte.addEventListener("input", (e) => {
@@ -201,7 +196,6 @@ if (page.match("cart")) {
     valideClic();
   });
 }
-
 texteInfo(regexChiffreLettre, "#addressErrorMsg", adresse);
 if (page.match("cart")) {
   let regexEmail = document.querySelector(".regex_email");
@@ -229,13 +223,13 @@ if (page.match("cart")) {
       document.querySelector("#emailErrorMsg").textContent = "Veuillez renseigner votre email.";
       document.querySelector("#emailErrorMsg").style.color = "white";
     } else if ( regValide !== 0) {
-      document.querySelector("#emailErrorMsg").innerHTML = "Caractère non valide";
+      document.querySelector("#emailErrorMsg").textContent = "Caractère non valide";
       document.querySelector("#emailErrorMsg").style.color = "white";
     } else if (valeur != "" && regMatch == null) {
-      document.querySelector("#emailErrorMsg").innerHTML = "Caratères acceptes pour ce champ. Forme email pas encore conforme";
+      document.querySelector("#emailErrorMsg").textContent = "Caratères acceptés pour ce champ. Forme email pas encore conforme";
       document.querySelector("#emailErrorMsg").style.color = "white";
     } else {
-      document.querySelector("#emailErrorMsg").innerHTML = "Forme email conforme.";
+      document.querySelector("#emailErrorMsg").textContent = "Forme email conforme.";
       document.querySelector("#emailErrorMsg").style.color = "white";
     }
   });
@@ -253,7 +247,6 @@ function couleurRegex(regSearch, valeurEcoute, inputAction) {
     inputAction.style.color = "white";
   }
 }
-
 function texteInfo(regex, pointage, zoneEcoute) {
       if (page.match("cart")) {
       zoneEcoute.addEventListener("input", (e) => {
@@ -263,16 +256,15 @@ function texteInfo(regex, pointage, zoneEcoute) {
         document.querySelector(pointage).textContent = "Veuillez renseigner ce champ.";
         document.querySelector(pointage).style.color = "white";
       } else if (valeur !== "" && index != 0) {
-        document.querySelector(pointage).innerHTML = "Reformulez cette donnee";
+        document.querySelector(pointage).textContent = "Reformulez cette donnée";
         document.querySelector(pointage).style.color = "white";
       } else {
-      document.querySelector(pointage).innerHTML = "Caratères acceptes pour ce champ.";
+      document.querySelector(pointage).textContent = "Caratères acceptés pour ce champ.";
       document.querySelector(pointage).style.color = "white";
       }
     });
   }
 }
-
 let commande = document.querySelector("#order");
 function valideClic() {
   let contactRef = JSON.parse(localStorage.getItem("contactClient"));
@@ -294,11 +286,11 @@ if (page.match("cart")) {
   });
 }
 
-// Fonction recuperation ID 
+// Fonction récupération ID 
 
 let panierId = [];
 function tableauId() {
-let panier = JSON.parse(localStorage.getItem("panierStocke"));
+let panier = JSON.parse(localStorage.getItem("panierStocké"));
 if (panier && panier.length > 0) {
   for (let indice of panier) {
     panierId.push(indice._id);
@@ -309,7 +301,6 @@ if (panier && panier.length > 0) {
 }
 let contactRef;
 let commandeFinale;
-
 function paquet() {
   contactRef = JSON.parse(localStorage.getItem("contactClient"));
   commandeFinale = {
@@ -323,9 +314,7 @@ function paquet() {
     products: panierId,
   };
 }
-
 // Fonction envoi validation
-
 function envoiPaquet() {
   tableauId();
   paquet();

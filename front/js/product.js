@@ -3,11 +3,11 @@ const id = params.get("_id");
 
 fetch("http://localhost:3000/api/products")
   .then((res) => res.json())
-  .then((objetProduits) => {
-    lesProduits(objetProduits);
+  .then((getArticles) => {
+    lesProduits(getArticles);
   })
   .catch((err) => {
-    document.querySelector(".item").innerHTML = "<h1>erreur</h1>";
+    document.querySelector(".item").textContent = "<h1>erreur</h1>";
   });
 let articleClient = {};
 articleClient._id = id;
@@ -22,6 +22,10 @@ function lesProduits(produit) {
   let couleurOption = document.querySelector("#colors");
   for (let choix of produit) {
     if (id === choix._id) {
+      //let productImg = document.createElement("item__img");
+      //productImg.src = choix.imageUrl;
+      //productImg.alt = choix.altTxt;
+      //imageAlt.append(productImg);
       imageAlt.innerHTML = `<img src="${choix.imageUrl}" alt="${choix.altTxt}">`;
       titre.textContent = `${choix.name}`;
       prix.textContent = `${choix.price}`;
@@ -38,12 +42,11 @@ choixCouleur.addEventListener("input", (ec) => {
   let couleurProduit;
   couleurProduit = ec.target.value;
   articleClient.couleur = couleurProduit;
-
   document.querySelector("#addToCart").style.color = "white";
   document.querySelector("#addToCart").textContent = "Ajouter au panier";
 });
 
-// Quantite des produits
+// Quantité des produits
 
 let choixQuantite = document.querySelector('input[id="quantity"]');
 let quantiteProduit;
@@ -53,9 +56,7 @@ choixQuantite.addEventListener("input", (eq) => {
   document.querySelector("#addToCart").style.color = "white";
   document.querySelector("#addToCart").textContent = "Ajouter au panier";
 });
-
 // Condition pour la validation
-
 let choixProduit = document.querySelector("#addToCart");
 choixProduit.addEventListener("click", () => {
   if (
@@ -65,11 +66,11 @@ choixProduit.addEventListener("click", () => {
     articleClient.couleur === "" ||
     articleClient.couleur === undefined
   ) {
-    alert("Pour valider le choix de cet article, veuillez renseigner une couleur, et/ou une quantite valide entre 1 et 100");
+    alert("Pour valider le choix de cet article, veuillez renseigner une couleur, et/ou une quantité valide entre 1 et 100");
   } else {
     Panier();
     document.querySelector("#addToCart").style.color = "rgb(0, 205, 0)";
-    document.querySelector("#addToCart").textContent = "Produit ajoute !";
+    document.querySelector("#addToCart").textContent = "Produit ajouté !";
   }
 });
 let choixProduitClient = [];
@@ -78,10 +79,10 @@ let produitsTemporaires = [];
 let produitsAPousser = [];
 
 function ajoutPremierProduit() {
-  // Si le produit enregistre est null c'est qu'il n'est pas cree
+  // Si le produit enregistré est null c'est qu'il n'est pas créé
   if (produitsEnregistres === null) {
     choixProduitClient.push(articleClient);
-    return (localStorage.panierStocke = JSON.stringify(choixProduitClient));
+    return (localStorage.panierStocké = JSON.stringify(choixProduitClient));
   }
 }
 
@@ -99,18 +100,18 @@ function ajoutAutreProduit() {
     return 0;
   });
   produitsTemporaires = [];
-  return (localStorage.panierStocke = JSON.stringify(produitsAPousser));
+  return (localStorage.panierStocké = JSON.stringify(produitsAPousser));
 }
 
 function Panier() {
-  produitsEnregistres = JSON.parse(localStorage.getItem("panierStocke"));
+  produitsEnregistres = JSON.parse(localStorage.getItem("panierStocké"));
   if (produitsEnregistres) {
     for (let choix of produitsEnregistres) {
       if (choix._id === id && choix.couleur === articleClient.couleur) {
-        alert("RAPPEL: Vous aviez deja choisi cet article.");
+        alert("RAPPEL: Vous aviez déja choisi cet article.");
         let additionQuantite = parseInt(choix.quantite) + parseInt(quantiteProduit);
         choix.quantite = JSON.stringify(additionQuantite);
-        return (localStorage.panierStocke = JSON.stringify(produitsEnregistres));
+        return (localStorage.panierStocké = JSON.stringify(produitsEnregistres));
       }
     }
     return ajoutAutreProduit();
