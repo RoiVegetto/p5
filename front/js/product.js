@@ -1,36 +1,32 @@
 const params = new URLSearchParams(document.location.search);
-const id = params.get("_id");
+const id = params.get("id");
 
 fetch("http://localhost:3000/api/products")
   .then((res) => res.json())
-  .then((getArticles) => {
-    lesProduits(getArticles);
+  .then((json) => {
+    lesProduits(json);
   })
   .catch((err) => {
-    document.querySelector(".item").textContent = "<h1>erreur</h1>";
+		document.querySelector('#limitedWidthBlock').innerHTML = "<h1>ERREUR</h1>";
   });
 let articleClient = {};
 articleClient._id = id;
 
 // Fonction d'affichage du produit de l'api
 
-function lesProduits(produit) {
+function lesProduits(produits) {
   let imageAlt = document.querySelector("article div.item__img");
   let titre = document.querySelector("#title");
   let prix = document.querySelector("#price");
   let description = document.querySelector("#description");
   let couleurOption = document.querySelector("#colors");
-  for (let choix of produit) {
-    if (id === choix._id) {
-      //let productImg = document.createElement("item__img");
-      //productImg.src = choix.imageUrl;
-      //productImg.alt = choix.altTxt;
-      //imageAlt.append(productImg);
+
+  for (let choix of produits) {
+    if (id == choix._id) {
       imageAlt.innerHTML = `<img src="${choix.imageUrl}" alt="${choix.altTxt}">`;
       titre.textContent = `${choix.name}`;
       prix.textContent = `${choix.price}`;
       description.textContent = `${choix.description}`;
-      articleClient.prix = `${choix.price}`;
       for (let couleur of choix.colors) {
         couleurOption.innerHTML += `<option value="${couleur}">${couleur}</option>`;
       }

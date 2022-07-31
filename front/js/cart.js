@@ -1,27 +1,34 @@
 const page = document.location.href;
+let produits = {}
+
 if (page.match("cart")) {
 fetch("http://localhost:3000/api/products")
   .then((res) => res.json())
   .then((objetProduits) => {
-      affichagePanier(objetProduits);
+    produits = objetProduits;
+    affichagePanier();
   })
   .catch((err) => {
-      document.querySelector("#cartAndFormContainer").textContent = "<h1>erreur</h1>";
+    console.log(err)
+    document.querySelector("#cartAndFormContainer").innerHTML = "<h1>ERREUR</h1>";
   });
 }
 
-function affichagePanier(index) {
+function affichagePanier() {
   let panier = JSON.parse(localStorage.getItem("panierStocké"));
+  console.log(panier)
+  console.log(produits)
   // Si le panier est supérieur à 0
   if (panier && panier.length != 0) {
     for (let choix of panier) {
-      for (let g = 0, h = index.length; g < h; g++) {
-        if (choix._id === index[g]._id) {
-          choix.name = index[g].name;
-          choix.prix = index[g].price;
-          choix.image = index[g].imageUrl;
-          choix.description = index[g].description;
-          choix.alt = index[g].altTxt;
+      for (let g = 0, h = produits.length; g < h; g++) {
+        if (choix._id === produits[g]._id) {
+          choix.name = produits[g].name;
+          choix.prix = produits[g].price;
+          choix.image = produits[g].imageUrl;
+          choix.description = produits[g].description;
+          choix.alt = produits[g].altTxt;
+          choix.quantite = parseInt(choix.quantite);
         }
       }
     }
@@ -30,6 +37,7 @@ function affichagePanier(index) {
     document.querySelector("#totalQuantity").textContent = "0";
     document.querySelector("#totalPrice").textContent = "0";
     document.querySelector("h1").textContent = "Votre panier est vide";
+    document.querySelector("#cart__items").innerHTML = "";
   }
   modifQuantite();
   suppression();
@@ -37,10 +45,12 @@ function affichagePanier(index) {
 
 // Affichage d'un panier sous forme de tableau
 
-function affiche(indexe) {
+function affiche(panier) {
   let zonePanier = document.querySelector("#cart__items");
-  zonePanier.innerHTML += indexe.map((choix) => 
-  `<article class="cart__item" data-id="${choix._id}" data-couleur="${choix.couleur}" data-quantité="${choix.quantité}"> 
+  console.log(panier);
+  console.log(zonePanier);
+  zonePanier.innerHTML = panier.map((choix) => 
+  `<article class="cart__item" data-id="${choix._id}" data-couleur="${choix.couleur}" data-quantite="${choix.quantite}"> 
     <div class="cart__item__img">
       <img src="${choix.image}" alt="${choix.alt}">
     </div>
@@ -53,7 +63,7 @@ function affiche(indexe) {
       <div class="cart__item__content__settings">
         <div class="cart__item__content__settings__quantity">
           <p>Qté : </p>
-          <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${choix.quantité}">
+          <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${choix.quantite}">
         </div>
         <div class="cart__item__content__settings__delete">
           <p class="deleteItem" data-id="${choix._id}" data-couleur="${choix.couleur}">Supprimer</p>
@@ -77,9 +87,9 @@ function modifQuantite() {
           article._id === cart.dataset.id &&
           cart.dataset.couleur === article.couleur
         ) {
-          article.quantité = eq.target.value;
+          article.quantite = eq.target.value;
           localStorage.panierStocké = JSON.stringify(panier);
-          totalProduit();
+          affichagePanier();
         }
     });
   });
@@ -105,8 +115,7 @@ function suppression() {
               "Vous n'avez pas d'article dans votre panier";
           }
           localStorage.panierStocké = JSON.stringify(nouveauPanier);
-          totalProduit();
-          return location.reload();
+          affichagePanier();
         }
     });
   });
@@ -118,9 +127,11 @@ function totalProduit() {
   let totalArticle = 0;
   let prixCombiné = 0;
   let totalPrix = 0;
+  console.log(produits);
   for (let article of panier) {
-    totalArticle += JSON.parse(article.quantité);
-    prixCombiné = JSON.parse(article.quantité) * JSON.parse(article.prix);
+    console.log(article);
+    totalArticle += parseInt(article.quantite);
+    prixCombiné = parseInt(article.quantite) * produits.find(x => article._id == x._id).price;
     totalPrix += prixCombiné;
   }
   document.getElementById("totalQuantity").textContent = totalArticle;
